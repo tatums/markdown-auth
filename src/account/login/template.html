@@ -1,0 +1,18 @@
+<h2 class="md-headline">Login</h2>
+
+<form ng-submit="login.submit(form, loginForm.$valid)" name="loginForm" novalidate>
+
+  <md-input-container>
+    <label for="username">Username</label>
+    <input id="username" ng-model="form.username" aria-label="username" name="username" type="text" required>
+  </md-input-container>
+
+  <md-input-container>
+    <input id="password" ng-model="form.password" aria-label="password" name="password" type="password" required>
+    <label for="password">Password</label>
+  </md-input-container>
+
+  <md-button class="md-raised" type="submit">Login</md-button>
+
+</form>
+
