@@ -97,14 +97,7 @@ export default class AwsService {
           console.log(err)
           return err
         }
-        //console.log('JWT:\n' + session.getIdToken().getJwtToken());
         return session
-        //AWS.config.credentials = new AWS.CognitoIdentityCredentials({
-        //  IdentityPoolId: 'us-east-1:f08f199c-4e76-43b9-a819-364360943c84',
-        //  Logins : {
-        //    'cognito-idp.us-east-1.amazonaws.com/us-east-1_BGU9CKFCM' : session.getIdToken().getJwtToken()
-        //  }
-        //});
       });
     }
 
@@ -151,11 +144,6 @@ export default class AwsService {
     return new Promise((resolve, reject) => {
       cognitoUser.authenticateUser(authenticationDetails, {
         onSuccess: function (result) {
-          //console.log({
-          //  accessToken: result.getAccessToken().getJwtToken(),
-          //  idToken: result.getIdToken().getJwtToken()
-          //})
-
           AWS.config.credentials = new AWS.CognitoIdentityCredentials({
             IdentityPoolId: 'us-east-1:f08f199c-4e76-43b9-a819-364360943c84',
             Logins : {
