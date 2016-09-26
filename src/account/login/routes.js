@@ -1,4 +1,4 @@
-routes.$inject = ['$stateProvider'];
+routes.$inject = ['$stateProvider']
 
 export default function routes($stateProvider) {
   $stateProvider
@@ -7,6 +7,6 @@ export default function routes($stateProvider) {
       template: require('./template.html'),
       controller: 'LoginController',
       controllerAs: 'login',
-      authenticate: false
-    });
+      requireLogin: false
+    })
 }

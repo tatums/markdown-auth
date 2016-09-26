@@ -44,23 +44,15 @@ function getIdToken(email) {
   return localStorage[key]
 }
 
-
 export default function run($rootScope, $state, jwtHelper, AwsService) {
-
   $rootScope.$on("$stateChangeStart", function(event, toState, toParams, fromState, fromParams){
-    if ( toState.authenticate) {
+    if ( toState.requireLogin) {
+      AwsService.getUserFromLocal()
       let user = AwsService.currentUser()
-
-      if ( tokenValid(user) ) {
-        console.log("YEP");
-      } else {
-        console.log('NEED TO LGOIN');
-        $state.transitionTo('account.login');
-        event.preventDefault();
+      if ( !tokenValid(user) ) {
+        $state.transitionTo('account.login')
+        event.preventDefault()
       }
-    } else {
-      console.log('no auth necessary');
     }
   });
-
 }

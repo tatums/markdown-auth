@@ -2,7 +2,7 @@ import uirouter from 'angular-ui-router';
 import routes from './routes';
 import LoginController from './controller';
 import angularjwt from 'angular-jwt';
-import AwsService from './../aws_service'
+import AwsService from '../../services/aws'
 
 export default angular.module('app.login', [uirouter, angularjwt])
   .config(routes)

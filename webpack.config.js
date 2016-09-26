@@ -1,13 +1,22 @@
 var path = require('path');
-
 module.exports = {
   entry: "./src/index.js",
   output: {
-    path: __dirname,
+    path: path.join(__dirname, 'dist'),
     filename: "bundle.js"
   },
   module: {
+    preLoaders: [
+      {
+        test: /\.min\.js$/,
+        loader: 'source-map'
+      }
+    ],
     loaders: [
+      {
+        test: /\.json$/,
+        loader: 'json'
+      },
       {
         test: path.join(__dirname, 'src'),
         loaders: ['babel']

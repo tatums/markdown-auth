@@ -7,6 +7,6 @@ export default function routes($stateProvider) {
       template: require('./template.html'),
       controller: 'MyAccountController',
       controllerAs: 'myAccount',
-      authenticate: true
+      requireLogin: true
     });
 }

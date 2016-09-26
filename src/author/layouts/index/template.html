@@ -1,0 +1,10 @@
+<h1>{{ctl.title}}</h1>
+
+<ul>
+  <li ng-repeat="item in ctl.items">
+    <a ui-sref="layouts.show({ id: item.Key })">{{item.Key}}</a>
+  </li>
+</ul>
+
+<a ui-sref="account.myAccount"> Me </a>
+

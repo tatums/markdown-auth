@@ -1,8 +1,5 @@
-
-export default class LoginController {
-
+export default class controller {
   constructor(AwsService, $mdToast, $state) {
-
     function sendMessage(message) {
       $mdToast.show(
         $mdToast.simple()
@@ -34,12 +31,11 @@ export default class LoginController {
           $state.go('account.myAccount')
         })
         .catch((err) => {
+          console.log(err)
           sendMessage('Sorry, the username/password combination failed   (╯°□°)╯︵ ┻━┻ ')
         })
       }
     }
-
   }
 }
-
-LoginController.$inject = ['AwsService', '$mdToast', '$state']
+controller.$inject = ['AwsService', '$mdToast', '$state']

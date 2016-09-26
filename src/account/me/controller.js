@@ -1,4 +1,4 @@
-export default class LoginController {
+export default class controller {
   constructor(AwsService, $state) {
     this.title = "My Account"
     this.currentUser = AwsService.currentUser()
@@ -9,4 +9,4 @@ export default class LoginController {
   }
 }
 
-LoginController.$inject = ['AwsService', '$state']
+controller.$inject = ['AwsService', '$state']
