@@ -15,6 +15,6 @@ export default function routes($stateProvider) {
           return AwsService.layout($stateParams.id)
         }
       },
-      requireLogin: false
+      requireLogin: true
     })
 }

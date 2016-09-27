@@ -66,6 +66,12 @@ export default class AwsService {
       return s3.listObjects({ Bucket: 'dietsmarts.info', Prefix: 'layouts' }).promise();
     }
 
+    this.putBucketLayout = (key, body) => {
+      const s3 = new AWS.S3()
+      return s3.putObject({ Bucket: 'dietsmarts.info', Key: key, Body: body })
+        .promise();
+    }
+
     this.cognitoCredentials = (session) => {
       return new AWS.CognitoIdentityCredentials({
         IdentityPoolId: 'us-east-1:f08f199c-4e76-43b9-a819-364360943c84',

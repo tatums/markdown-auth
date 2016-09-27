@@ -7,10 +7,13 @@ export default function routes($stateProvider) {
       controller: 'LayoutsEditController',
       controllerAs: 'ctl',
       resolve: {
+        id: function ($stateParams) {
+          return $stateParams.id
+        },
         item: function ($stateParams, AwsService) {
           return AwsService.layout($stateParams.id)
         }
       },
-      requireLogin: false
+      requireLogin: true
     })
 }

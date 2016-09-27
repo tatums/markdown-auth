@@ -1,7 +1,12 @@
 <h2>Edit</h2>
 
-<textarea ng-model="ctl.body"></textarea>
+<form ng-submit="ctl.save(ctl.form, layoutForm.$valid)" name="layoutForm">
+  <textarea ng-model="ctl.form.body" name="body"></textarea>
+  <p ng-if="layoutForm.body.$error.required && ctl.layoutForm.body.$touched">Layout is required.</p>
+  <button type="submit">Save</button>
+</form>
 
 <div>
-  <a ui-sref="layouts.show({id: ctl.Key})"> back </a>
+  <a ui-sref="layouts.show({id: ctl.id})"> back </a>
 </div>
+
