@@ -7,6 +7,18 @@ const userPool = new CognitoIdentityServiceProvider.CognitoUserPool({
   ClientId : '3q8g2135i3sn30g0cpo4bu4uop'
 })
 
+const defaultBody = `<!doctype html>
+  <html lang="en">
+    <head>
+      <meta charset="UTF-8" />
+        <title>{{ title }}</title>
+      <meta name="description" content="{{ description }}">
+    </head>
+  <body>
+    {{{ contents }}}
+  </body>
+</html>`
+
 export default class AwsService {
 
   constructor() {
@@ -66,9 +78,22 @@ export default class AwsService {
       return s3.listObjects({ Bucket: 'dietsmarts.info', Prefix: 'layouts' }).promise();
     }
 
+    this.createBucketLayout = (key) => {
+      const s3 = new AWS.S3()
+      return s3.putObject({ Bucket: 'dietsmarts.info', Key: key, Body: defaultBody })
+        .promise();
+    }
+
     this.putBucketLayout = (key, body) => {
       const s3 = new AWS.S3()
       return s3.putObject({ Bucket: 'dietsmarts.info', Key: key, Body: body })
+        .promise();
+    }
+
+    this.deleteBucketLayout = (key) => {
+      //return Promise.resolve({})
+      const s3 = new AWS.S3()
+      return s3.deleteObject({ Bucket: 'dietsmarts.info', Key: key })
         .promise();
     }
 

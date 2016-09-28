@@ -3,8 +3,15 @@
 <ul>
   <li ng-repeat="item in ctl.items">
     <a ui-sref="layouts.show({ id: item.Key })">{{item.Key}}</a>
+    <a ui-sref="layouts.edit({id: ctl.id})">Edit</a>
+    <button ng-click="ctl.delete(item)">Del</button>
   </li>
 </ul>
 
 <a ui-sref="account.myAccount"> Me </a>
 
+<form ng-submit="ctl.create(ctl.form, layoutForm.$valid)" name="layoutForm">
+  <input ng-model="ctl.form.key" name="key"></input>
+  <p ng-if="layoutForm.key.$error.required && ctl.layoutForm.key.$touched">Layout is required.</p>
+  <button type="submit">Save</button>
+</form>
