@@ -7,6 +7,7 @@ export default function routes($stateProvider) {
       template: require('./template.html'),
       controller: 'LoginController',
       controllerAs: 'login',
+      navItem: 'me',
       requireLogin: false
     })
 }

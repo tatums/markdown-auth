@@ -7,6 +7,7 @@ export default function routes($stateProvider) {
       template: require('./template.html'),
       controller: 'LayoutsShowController',
       controllerAs: 'ctl',
+      navItem: 'layouts',
       resolve: {
         id: function ($stateParams) {
           return $stateParams.id

@@ -12,5 +12,8 @@ export default function routing($stateProvider, $urlRouterProvider, $mdThemingPr
     .state('layouts', {
       template: require('./author/base_template.html'),
     })
+    .state('pages', {
+      template: require('./author/base_template.html'),
+    })
   $urlRouterProvider.otherwise('/account/login');
 }

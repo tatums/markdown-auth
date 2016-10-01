@@ -19,9 +19,11 @@ const defaultBody = `<!doctype html>
   </body>
 </html>`
 
-export default class AwsService {
-
+class AwsService {
   constructor() {
+    this.userPoolId = 'us-east-1_BGU9CKFCM'
+    this.clientId = '3q8g2135i3sn30g0cpo4bu4uop'
+
     this.userPool = new CognitoIdentityServiceProvider.CognitoUserPool({
       UserPoolId : 'us-east-1_BGU9CKFCM',
       ClientId : '3q8g2135i3sn30g0cpo4bu4uop'
@@ -68,10 +70,10 @@ export default class AwsService {
         .catch(err => { console.log(err) })
     }
 
-    this.getObject = (key) => {
-      const s3 = new AWS.S3()
-      return s3.getObject({ Bucket: 'dietsmarts.info', Key: key }).promise();
-    }
+    //this.getObject = (key) => {
+    //  const s3 = new AWS.S3()
+    //  return s3.getObject({ Bucket: 'dietsmarts.info', Key: key }).promise();
+    //}
 
     this.getBucketLayouts = () => {
       const s3 = new AWS.S3()
@@ -79,20 +81,20 @@ export default class AwsService {
     }
 
     this.createBucketLayout = (key) => {
-      const s3 = new AWS.S3()
-      return s3.putObject({ Bucket: 'dietsmarts.info', Key: key, Body: defaultBody })
+      let s3 = new AWS.S3()
+      return s3.putObject({ Bucket: 'dietsmarts.info', Key: `layouts/${key}`, Body: defaultBody })
         .promise();
     }
 
     this.putBucketLayout = (key, body) => {
-      const s3 = new AWS.S3()
+      let s3 = new AWS.S3()
       return s3.putObject({ Bucket: 'dietsmarts.info', Key: key, Body: body })
         .promise();
     }
 
     this.deleteBucketLayout = (key) => {
       //return Promise.resolve({})
-      const s3 = new AWS.S3()
+      let s3 = new AWS.S3()
       return s3.deleteObject({ Bucket: 'dietsmarts.info', Key: key })
         .promise();
     }
@@ -116,6 +118,39 @@ export default class AwsService {
       })
     }
 
+  }
+
+
+  listObjects (prefix) {
+    return this.getJwtToken()
+      .then(this.cognitoCredentials)
+      .then(credentials => {
+        AWS.config.credentials = credentials
+        return this.refreshCredentials()
+      })
+      .then(Aws => {
+        let s3 = new Aws.S3()
+        return s3.listObjects(
+          { Bucket: 'dietsmarts.info', Prefix: prefix }
+        ).promise();
+      })
+      .then(resp => { return resp.Contents })
+      .catch(err => { console.log(err) })
+  }
+
+
+  getObject (key) {
+    return this.getJwtToken()
+      .then(this.cognitoCredentials)
+      .then(credentials => {
+        AWS.config.credentials = credentials
+        return this.refreshCredentials()
+      })
+      .then(Aws => {
+        let s3 = new Aws.S3()
+        return s3.getObject({ Bucket: 'dietsmarts.info', Key: key }).promise();
+      })
+      .catch(err => { console.log(err) })
   }
 
 
@@ -250,3 +285,5 @@ export default class AwsService {
 }
 
 AwsService.$inject = [];
+
+export default AwsService

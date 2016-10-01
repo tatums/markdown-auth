@@ -7,6 +7,7 @@ export default function routes($stateProvider) {
       template: require('./template.html'),
       controller: 'MyAccountController',
       controllerAs: 'myAccount',
+      navItem: 'me',
       requireLogin: true
     });
 }

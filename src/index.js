@@ -10,6 +10,8 @@ import accountMe from './account/me'
 import authorLayoutsIndex from './author/layouts/index'
 import authorLayoutsShow from './author/layouts/show'
 import authorLayoutsEdit from './author/layouts/edit'
+import authorPagesIndex from './author/pages/index'
+import authorPagesEdit from './author/pages/edit'
 
 import config from './config'
 import run from './run'
@@ -23,6 +25,8 @@ export const app = angular.module('app', [
   authorLayoutsIndex,
   authorLayoutsShow,
   authorLayoutsEdit,
+  authorPagesIndex,
+  authorPagesEdit,
 ])
 .config(config)
 .run(run)

@@ -1,30 +1,33 @@
-export default class controller {
+class controller {
   constructor(AwsService, $state, $filter, items) {
     this.title = "Layouts"
-    this.getLayouts = AwsService.getLayouts
     this.items = items
-
-    this.delete = (item) => {
-      //let item = $filter('filter')(this.items, {Key: key}, true)[0];
-      let index = this.items.indexOf(item)
-      this.items.splice(index, 1)
-      AwsService.deleteBucketLayout(item.Key)
-      .then(resp => {
-      })
-      .catch(err => {
-        console.log(err)
-      })
-    }
-
-    this.create = (form, validity) => {
-      AwsService.createBucketLayout(form.key)
-      .then(resp => {
-        console.log(resp)
-      })
-      .catch(err => {
-        console.log(err)
-      })
-    }
+    this._AwsService = AwsService
   }
+
+  delete (item) {
+    this._AwsService.deleteBucketLayout(item.Key)
+      .then((resp) => {
+        let index = this.items.indexOf(item)
+        this.items.splice(index, 1)
+      }).catch((err) => {
+        console.log('err: ', err)
+      })
+  }
+
+  create (form, validity) {
+    this._AwsService.createBucketLayout(form.key)
+      .then((resp) => {
+        let key = `layouts/${form.key}`
+        let date = new Date()
+        this.items.unshift({ Key: key, LastModified: date })
+        console.log(resp)
+      }).catch((err) => {
+        console.log(err)
+      })
+  }
+
 }
 controller.$inject = ['AwsService', '$state', '$filter', 'items']
+
+export default controller

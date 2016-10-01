@@ -1,18 +1,18 @@
 routes.$inject = ['$stateProvider']
 export default function routes($stateProvider) {
   $stateProvider
-    .state('layouts.edit', {
-      url: '/author/layouts/:id/edit',
+    .state('pages.edit', {
+      url: '/author/pages/:id/edit',
       template: require('./template.html'),
-      controller: 'LayoutsEditController',
+      controller: 'PagesEditController',
       controllerAs: 'ctl',
-      navItem: 'layouts',
+      navItem: 'pages',
       resolve: {
-        id: ($stateParams) => {
+        id: function ($stateParams) {
           return $stateParams.id
         },
-        item: ($stateParams, AwsService) => {
-          return AwsService.layout($stateParams.id)
+        page: ($stateParams, AwsService) => {
+          return AwsService.getObject($stateParams.id)
         }
       },
       requireLogin: true

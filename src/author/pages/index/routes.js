@@ -1,15 +1,15 @@
 routes.$inject = ['$stateProvider']
 export default function routes($stateProvider) {
   $stateProvider
-    .state('layouts.index', {
-      url: '/author/layouts',
+    .state('pages.index', {
+      url: '/author/pages',
       template: require('./template.html'),
-      controller: 'LayoutsController',
+      controller: 'PagesController',
       controllerAs: 'ctl',
-      navItem: 'layouts',
+      navItem: 'pages',
       resolve: {
-        items: (AwsService) => {
-         return AwsService.layouts()
+        pages: (AwsService) => {
+          return AwsService.listObjects('src')
         }
       },
       requireLogin: true
