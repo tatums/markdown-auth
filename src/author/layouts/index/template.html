@@ -1,17 +1,47 @@
-<h1>{{ctl.title}}</h1>
+<div>
 
-<ul>
-  <li ng-repeat="item in ctl.items">
-    <a ui-sref="layouts.show({ id: item.Key })">{{item.Key}}</a>
-    <a ui-sref="layouts.edit({id: ctl.id})">Edit</a>
-    <button ng-click="ctl.delete(item)">Del</button>
-  </li>
-</ul>
+  <md-toolbar>
+    <div class="md-toolbar-tools">
+      <h2> <span>{{ctl.title}}</span> </h2>
+    </div>
+  </md-toolbar>
 
-<a ui-sref="account.myAccount"> Me </a>
+  <md-content class="md-whiteframe-z2 move-up" layout-padding>
+    <md-list>
+      <md-list-item class="md-3-line" ng-repeat="item in ctl.items">
+        <div class="md-list-item-text">
+          <h3> <a ui-sref="layouts.show({ id: item.Key })">{{item.Key}}</a> </h3>
+          <p>
+            <span>{{item.LastModified}}<span>
+          </p>
+        </div>
+        <md-button ui-sref="layouts.edit({id: item.Key})">Edit</md-button>
+        <md-button ng-click="ctl.delete(item)" class="md-raised md-warn">Del</md-button>
+        <md-divider inset></md-divider>
+      </md-list-item>
+    </md-list>
+  </md-content>
 
-<form ng-submit="ctl.create(ctl.form, layoutForm.$valid)" name="layoutForm">
-  <input ng-model="ctl.form.key" name="key"></input>
-  <p ng-if="layoutForm.key.$error.required && ctl.layoutForm.key.$touched">Layout is required.</p>
-  <button type="submit">Save</button>
-</form>
+  <md-toolbar>
+    <div class="md-toolbar-tools">
+      <h2>
+        <span>Create New Layout</span>
+      </h2>
+      <span flex></span>
+    </div>
+  </md-toolbar>
+
+  <md-content class="md-whiteframe-z2 move-up" layout-padding>
+
+    <form ng-submit="ctl.create(ctl.form, layoutForm.$valid)" name="layoutForm">
+      <md-input-container>
+        <label>Name</label>
+        <input ng-model="ctl.form.key" name="key"></input>
+        <p ng-if="layoutForm.key.$error.required && ctl.layoutForm.key.$touched">Layout is required.</p>
+      </md-input-container>
+      <md-button type="submit">Create</md-button>
+    </form>
+
+  </md-content>
+
+</div>

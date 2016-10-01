@@ -7,8 +7,10 @@ export default class controller {
       body: item.Body.toString()
     }
     this.save = (form, validity) => {
+      console.log('save!')
       AwsService.putBucketLayout(this.id, form.body)
       .then(resp => {
+        console.log(resp)
         $state.go('layouts.index')
       })
       .catch(err => {

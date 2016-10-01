@@ -1,12 +1,25 @@
-<h2>Edit</h2>
+<div class="md-inline-form">
 
-<form ng-submit="ctl.save(ctl.form, layoutForm.$valid)" name="layoutForm">
-  <textarea ng-model="ctl.form.body" name="body"></textarea>
-  <p ng-if="layoutForm.body.$error.required && ctl.layoutForm.body.$touched">Layout is required.</p>
-  <button type="submit">Save</button>
-</form>
+  <md-toolbar>
+    <div class="md-toolbar-tools">
+      <span flex="" class="flex">Edit</span>
+    </div>
+  </md-toolbar>
 
-<div>
-  <a ui-sref="layouts.show({id: ctl.id})"> back </a>
+  <md-content class="md-whiteframe-z2 move-up" layout-padding>
+    <form ng-submit="ctl.save(ctl.form, layoutForm.$valid)" name="layoutForm">
+      <md-input-container class="md-block">
+        <label>Content</label>
+        <textarea ng-model="ctl.form.body" name="body" md-select-on-focus></textarea>
+      </md-input-container>
+
+      <p ng-if="layoutForm.body.$error.required && ctl.layoutForm.body.$touched">Layout is required.</p>
+
+      <!--
+      <md-button class="md-raised md-primary">Save</md-button>
+      -->
+      <md-button ui-sref="layouts.index"> Cancel </md-button>
+      <md-button type="submit" class="md-raised md-primary">Save</md-button>
+    </form>
+  </md-content>
 </div>
-

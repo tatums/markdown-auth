@@ -1,6 +1,10 @@
-routing.$inject = ['$stateProvider', '$urlRouterProvider', ];
+routing.$inject = ['$stateProvider', '$urlRouterProvider', '$mdThemingProvider' ];
 
-export default function routing($stateProvider, $urlRouterProvider) {
+export default function routing($stateProvider, $urlRouterProvider, $mdThemingProvider) {
+
+ $mdThemingProvider.theme('default')
+    .primaryPalette('blue-grey')
+
   $stateProvider
     .state('account', {
       template: require('./account/base_template.html'),
