@@ -28,9 +28,11 @@
     <md-list>
       <md-list-item class="md-3-line" ng-repeat="page in ctl.pages">
         <div class="md-list-item-text">
-          <h3> <a ui-sref="pages.edit({ id: page.Key })">{{page}}</a> </h3>
+          <h3> <a ui-sref="pages.edit({ id: page.Key })">{{page.Key}}</a> </h3>
           <p>
-            <span>{{page}}<span>
+          <span>{{page.LastModified}}<span>
+            <span>{{page.ETag}}<span>
+            <span>{{page.Size}}<span>
           </p>
         </div>
         <md-divider inset></md-divider>

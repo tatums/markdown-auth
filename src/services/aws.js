@@ -138,6 +138,19 @@ class AwsService {
       .catch(err => { console.log(err) })
   }
 
+  putObject (key, body) {
+    return this.getJwtToken()
+      .then(this.cognitoCredentials)
+      .then(credentials => {
+        AWS.config.credentials = credentials
+        return this.refreshCredentials()
+      })
+      .then(Aws => {
+        let s3 = new Aws.S3()
+        return s3.putObject({ Bucket: 'dietsmarts.info', Key: key, Body: body }).promise()
+      })
+      .catch(err => { console.log(err) })
+  }
 
   getObject (key) {
     return this.getJwtToken()
