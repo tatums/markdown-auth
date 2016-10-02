@@ -9,11 +9,11 @@ export default function routes($stateProvider) {
       controllerAs: 'ctl',
       navItem: 'layouts',
       resolve: {
-        id: function ($stateParams) {
+        id: ($stateParams) => {
           return $stateParams.id
         },
-        item: function ($stateParams, AwsService) {
-          return AwsService.layout($stateParams.id)
+        item: ($stateParams, AwsService) => {
+          return AwsService.getObject($stateParams.id)
         }
       },
       requireLogin: true

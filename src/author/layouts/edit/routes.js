@@ -12,7 +12,7 @@ export default function routes($stateProvider) {
           return $stateParams.id
         },
         item: ($stateParams, AwsService) => {
-          return AwsService.layout($stateParams.id)
+          return AwsService.getObject($stateParams.id)
         }
       },
       requireLogin: true

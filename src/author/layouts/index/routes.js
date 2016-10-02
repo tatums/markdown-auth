@@ -9,7 +9,7 @@ export default function routes($stateProvider) {
       navItem: 'layouts',
       resolve: {
         items: (AwsService) => {
-         return AwsService.layouts()
+          return AwsService.listObjects('admin/layouts')
         }
       },
       requireLogin: true

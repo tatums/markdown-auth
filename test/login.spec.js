@@ -37,7 +37,7 @@ test('a user can login', t => {
   const btn = driver.findElement(webdriver.By.css('button[type=submit]'))
   btn.click()
 
-  const selector = webdriver.By.id('my-account')
+  const selector = webdriver.By.css('md-toolbar h2 span')
   driver.wait(
     webdriver.until.elementLocated(selector),
     4000

@@ -1,24 +1,40 @@
+const defaultBody = `<!doctype html>
+  <html lang="en">
+    <head>
+      <meta charset="UTF-8" />
+        <title>{{ title }}</title>
+      <meta name="description" content="{{ description }}">
+    </head>
+  <body>
+    {{{ contents }}}
+  </body>
+</html>`
+
+
 class controller {
   constructor(AwsService, $state, $filter, items) {
     this.title = "Layouts"
     this.items = items
-    this._AwsService = AwsService
+    this.AwsService = AwsService
+
   }
 
   delete (item) {
-    this._AwsService.deleteBucketLayout(item.Key)
+    // TODO Move this into the promise.
+    // Figure out why its not working as expected.
+    let index = this.items.indexOf(item)
+    this.items.splice(index, 1)
+    this.AwsService.deleteObject(item.Key)
       .then((resp) => {
-        let index = this.items.indexOf(item)
-        this.items.splice(index, 1)
       }).catch((err) => {
         console.log('err: ', err)
       })
   }
 
   create (form, validity) {
-    this._AwsService.createBucketLayout(form.key)
+    let key = `admin/layouts/${form.key}`
+    this.AwsService.putObject(key, defaultBody)
       .then((resp) => {
-        let key = `layouts/${form.key}`
         let date = new Date()
         this.items.unshift({ Key: key, LastModified: date })
         console.log(resp)

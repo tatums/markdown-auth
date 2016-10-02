@@ -28,7 +28,7 @@ export default class controller {
         AwsService.auth(form.username, form.password)
         .then((resp) => {
           sendMessage('You are now logged in.')
-          $state.go('account.myAccount')
+          $state.go('pages.index')
         })
         .catch((err) => {
           console.log(err)

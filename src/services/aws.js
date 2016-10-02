@@ -2,40 +2,35 @@ import AWS from 'aws-sdk'
 import CognitoIdentityServiceProvider from 'aws-sdk/clients/cognitoidentityserviceprovider'
 import 'amazon-cognito-identity-js'
 
-const userPool = new CognitoIdentityServiceProvider.CognitoUserPool({
-  UserPoolId : 'us-east-1_BGU9CKFCM',
-  ClientId : '3q8g2135i3sn30g0cpo4bu4uop'
-})
-
-const defaultBody = `<!doctype html>
-  <html lang="en">
-    <head>
-      <meta charset="UTF-8" />
-        <title>{{ title }}</title>
-      <meta name="description" content="{{ description }}">
-    </head>
-  <body>
-    {{{ contents }}}
-  </body>
-</html>`
 
 class AwsService {
   constructor() {
+    this.bucket = 'markdown-author'
     this.userPoolId = 'us-east-1_BGU9CKFCM'
     this.clientId = '3q8g2135i3sn30g0cpo4bu4uop'
+    this.identityPoolId = 'us-east-1:f08f199c-4e76-43b9-a819-364360943c84'
 
     this.userPool = new CognitoIdentityServiceProvider.CognitoUserPool({
-      UserPoolId : 'us-east-1_BGU9CKFCM',
-      ClientId : '3q8g2135i3sn30g0cpo4bu4uop'
+      UserPoolId : this.userPoolId,
+      ClientId : this.clientId
     })
 
+    this.cognitoCredentials = (session) => {
+      return new AWS.CognitoIdentityCredentials({
+        IdentityPoolId: this.identityPoolId,
+        Logins : {
+          'cognito-idp.us-east-1.amazonaws.com/us-east-1_BGU9CKFCM' : session.getIdToken().getJwtToken()
+        }
+      });
+    }
+
     this.currentUser = function () {
-      return userPool.getCurrentUser()
+      return this.userPool.getCurrentUser()
     }
 
     this.getJwtToken = () => {
       return new Promise((resolve, reject) => {
-        const cognitoUser = userPool.getCurrentUser();
+        const cognitoUser = this.userPool.getCurrentUser();
         if (cognitoUser != null) {
           cognitoUser.getSession(function(err, session) {
             if (err) { reject(err) }
@@ -45,67 +40,6 @@ class AwsService {
           reject('no cognito user')
         }
       })
-    }
-
-    this.layout = (id) => {
-      return this.getJwtToken()
-        .then(this.cognitoCredentials)
-        .then(credentials => {
-          AWS.config.credentials = credentials
-          return this.refreshCredentials()
-        })
-        .then(aws => { return this.getObject(id) })
-        .catch(err => { console.log(err) })
-    }
-
-    this.layouts = () => {
-      return this.getJwtToken()
-        .then(this.cognitoCredentials)
-        .then(credentials => {
-          AWS.config.credentials = credentials
-          return this.refreshCredentials()
-        })
-        .then(this.getBucketLayouts)
-        .then(resp => { return resp.Contents })
-        .catch(err => { console.log(err) })
-    }
-
-    //this.getObject = (key) => {
-    //  const s3 = new AWS.S3()
-    //  return s3.getObject({ Bucket: 'dietsmarts.info', Key: key }).promise();
-    //}
-
-    this.getBucketLayouts = () => {
-      const s3 = new AWS.S3()
-      return s3.listObjects({ Bucket: 'dietsmarts.info', Prefix: 'layouts' }).promise();
-    }
-
-    this.createBucketLayout = (key) => {
-      let s3 = new AWS.S3()
-      return s3.putObject({ Bucket: 'dietsmarts.info', Key: `layouts/${key}`, Body: defaultBody })
-        .promise();
-    }
-
-    this.putBucketLayout = (key, body) => {
-      let s3 = new AWS.S3()
-      return s3.putObject({ Bucket: 'dietsmarts.info', Key: key, Body: body })
-        .promise();
-    }
-
-    this.deleteBucketLayout = (key) => {
-      //return Promise.resolve({})
-      let s3 = new AWS.S3()
-      return s3.deleteObject({ Bucket: 'dietsmarts.info', Key: key })
-        .promise();
-    }
-
-    this.cognitoCredentials = (session) => {
-      return new AWS.CognitoIdentityCredentials({
-        IdentityPoolId: 'us-east-1:f08f199c-4e76-43b9-a819-364360943c84',
-        Logins : {
-          'cognito-idp.us-east-1.amazonaws.com/us-east-1_BGU9CKFCM' : session.getIdToken().getJwtToken()
-        }
-      });
     }
 
     this.refreshCredentials = () => {
@@ -118,8 +52,7 @@ class AwsService {
       })
     }
 
-  }
-
+  } // END of constructor
 
   listObjects (prefix) {
     return this.getJwtToken()
@@ -131,7 +64,7 @@ class AwsService {
       .then(Aws => {
         let s3 = new Aws.S3()
         return s3.listObjects(
-          { Bucket: 'dietsmarts.info', Prefix: prefix }
+          { Bucket: this.bucket, Prefix: prefix }
         ).promise();
       })
       .then(resp => { return resp.Contents })
@@ -147,7 +80,8 @@ class AwsService {
       })
       .then(Aws => {
         let s3 = new Aws.S3()
-        return s3.putObject({ Bucket: 'dietsmarts.info', Key: key, Body: body }).promise()
+        return s3.putObject({ Bucket: this.bucket, Key: key, Body: body })
+          .promise()
       })
       .catch(err => { console.log(err) })
   }
@@ -161,25 +95,35 @@ class AwsService {
       })
       .then(Aws => {
         let s3 = new Aws.S3()
-        return s3.getObject({ Bucket: 'dietsmarts.info', Key: key }).promise();
+        return s3.getObject({ Bucket: this.bucket, Key: key }).promise();
       })
       .catch(err => { console.log(err) })
   }
 
+  deleteObject (key) {
+    return this.getJwtToken()
+      .then(this.cognitoCredentials)
+      .then(credentials => {
+        AWS.config.credentials = credentials
+        return this.refreshCredentials()
+      })
+      .then(Aws => {
+        let s3 = new Aws.S3()
+        return s3.deleteObject({ Bucket: this.bucket, Key: key }).promise();
+      })
+      .catch(err => { console.log(err) })
+    }
 
   getUserFromLocal () {
-    var cognitoUser = userPool.getCurrentUser();
-
+    var cognitoUser = this.userPool.getCurrentUser();
     if (cognitoUser != null) {
       cognitoUser.getSession(function(err, session) {
         if (err) {
-          console.log(err)
           return err
         }
         return session
       });
     }
-
   }
 
 
@@ -191,7 +135,7 @@ class AwsService {
   confirm (attr) {
     var cognitoUser = new AWS.CognitoIdentityServiceProvider.CognitoUser({
       Username : attr.username,
-      Pool : userPool
+      Pool : this.userPool
     });
 
     cognitoUser.confirmRegistration(attr.confirmCode, true, function(err, result) {
@@ -205,28 +149,23 @@ class AwsService {
 
 
   auth (username, password) {
-    var authenticationDetails = new CognitoIdentityServiceProvider.AuthenticationDetails({
+    let authenticationDetails = new CognitoIdentityServiceProvider.AuthenticationDetails({
       Username: username,
       Password: password,
     });
 
-    var userPool = new CognitoIdentityServiceProvider.CognitoUserPool({
-      UserPoolId : 'us-east-1_BGU9CKFCM',
-      ClientId : '3q8g2135i3sn30g0cpo4bu4uop'
-    });
-
-    var cognitoUser = new CognitoIdentityServiceProvider.CognitoUser({
+    let cognitoUser = new CognitoIdentityServiceProvider.CognitoUser({
         Username : username,
-        Pool : userPool
+        Pool : this.userPool
     });
 
     return new Promise((resolve, reject) => {
       cognitoUser.authenticateUser(authenticationDetails, {
         onSuccess: function (result) {
           AWS.config.credentials = new AWS.CognitoIdentityCredentials({
-            IdentityPoolId: 'us-east-1:f08f199c-4e76-43b9-a819-364360943c84',
+            IdentityPoolId: this.identityPoolId,
             Logins : {
-              'cognito-idp.us-east-1.amazonaws.com/us-east-1_BGU9CKFCM' : result.getIdToken().getJwtToken()
+              'cognito-idp.us-east-1.amazonaws.com/us-east-1_BGU9CKFCM' : result.getIdToken().getJwtToken(),
             }
           })
           resolve({
@@ -273,11 +212,11 @@ class AwsService {
 
     let cognitoUser = new CognitoIdentityServiceProvider.CognitoUser({
       Username : attr.email,
-      Pool : userPool
+      Pool : this.userPool
     });
 
     return new Promise((resolve, reject) => {
-      userPool.signUp(attr.email, attr.password, attributeList, null, function(err, result){
+      this.userPool.signUp(attr.email, attr.password, attributeList, null, function(err, result){
         if (result) {
           cognitoUser = result.user
           resolve({
