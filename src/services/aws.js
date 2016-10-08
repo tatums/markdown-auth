@@ -1,7 +1,6 @@
-import AWS from 'aws-sdk'
+//import AWS from 'aws-sdk'
 import CognitoIdentityServiceProvider from 'aws-sdk/clients/cognitoidentityserviceprovider'
 import 'amazon-cognito-identity-js'
-
 
 class AwsService {
   constructor() {
@@ -257,6 +256,5 @@ class AwsService {
 
 }
 
-AwsService.$inject = [];
-
+AwsService.$inject = []
 export default AwsService

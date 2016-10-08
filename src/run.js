@@ -1,4 +1,4 @@
-run.$inject = ['$rootScope', '$state', 'jwtHelper', 'AwsService'];
+run.$inject = ['$rootScope', '$state', 'AwsService'];
 
 var jws = require('jws-jwk')
 var jwk = {
@@ -44,7 +44,7 @@ function getIdToken(email) {
   return localStorage[key]
 }
 
-export default function run($rootScope, $state, jwtHelper, AwsService) {
+export default function run($rootScope, $state, AwsService) {
   $rootScope.$on("$stateChangeStart", function(event, toState, toParams, fromState, fromParams){
     $rootScope.currentNavItem = toState.navItem
     if ( toState.requireLogin) {
