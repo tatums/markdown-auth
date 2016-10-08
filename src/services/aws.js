@@ -52,6 +52,18 @@ class AwsService {
       })
     }
 
+    this.cognitoUser = () => {
+      const user = this.currentUser()
+      return new Promise(function(resolve, reject){
+        if (user != null) {
+          user.getSession(function(err, session) {
+            if (err) { return err }
+            resolve(user)
+          })
+        }
+      })
+
+    }
   } // END of constructor
 
   listObjects (prefix) {
@@ -126,6 +138,15 @@ class AwsService {
     }
   }
 
+  changePassword (user, currentPassword, password, passwordConfirmation) {
+    return new Promise(function(resolve, reject){
+      user.changePassword(currentPassword, password, function(err, result) {
+        if (err) { reject(err); return  }
+        console.log('call result: ' + result);
+        resolve(result)
+      })
+    })
+  }
 
   signout () {
     let user = this.currentUser()

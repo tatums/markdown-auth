@@ -5,3 +5,24 @@
 </div>
 
 <md-button ng-click="myAccount.signout()" class="md-raised">Signout</md-button>
+
+
+<form ng-submit="myAccount.changePassword(form, changePasswordForm.$valid)" name="changePasswordForm" novalidate>
+
+  <md-input-container>
+    <input id="password" ng-model="form.currentPassword" aria-label="current password" name="currentPassword" type="password" required>
+    <label for="password">Current Password</label>
+  </md-input-container>
+
+  <md-input-container>
+    <input id="password" ng-model="form.password" aria-label="password" name="password" type="password" required>
+    <label for="password">Password</label>
+  </md-input-container>
+
+  <md-input-container>
+    <input id="password-confirm" ng-model="form.passwordConfirm" aria-label="password confirmation" name="password" type="password" required>
+    <label for="passwordConfirmation">Password Confirmation</label>
+  </md-input-container>
+  <md-button type="submit" class="md-raised">Change Password</md-button>
+
+</form>
