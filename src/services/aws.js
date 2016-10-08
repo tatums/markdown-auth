@@ -14,15 +14,6 @@ class AwsService {
       ClientId : this.clientId
     })
 
-    this.cognitoCredentials = (session) => {
-      return new AWS.CognitoIdentityCredentials({
-        IdentityPoolId: this.identityPoolId,
-        Logins : {
-          'cognito-idp.us-east-1.amazonaws.com/us-east-1_BGU9CKFCM' : session.getIdToken().getJwtToken()
-        }
-      });
-    }
-
     this.currentUser = function () {
       return this.userPool.getCurrentUser()
     }
@@ -40,6 +31,16 @@ class AwsService {
         }
       })
     }
+
+    this.cognitoCredentials = (session) => {
+      return new AWS.CognitoIdentityCredentials({
+        IdentityPoolId: this.identityPoolId,
+        Logins : {
+          'cognito-idp.us-east-1.amazonaws.com/us-east-1_BGU9CKFCM' : session.getIdToken().getJwtToken()
+        }
+      });
+    }
+
 
     this.refreshCredentials = () => {
       return new Promise((resolve, reject) => {

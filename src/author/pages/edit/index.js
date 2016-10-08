@@ -1,10 +1,9 @@
-import uirouter from 'angular-ui-router'
 import routes from './routes'
 import controller from './controller'
 
-const app = angular.module('app.pages.edit', [uirouter])
+const component = angular.module('app.pages.edit', [])
   .config(routes)
   .controller('PagesEditController', controller)
   .name
 
-export default app
+export default component

@@ -1,10 +1,10 @@
-import uirouter from 'angular-ui-router';
-import routes from './routes';
-import MyAccountController from './controller';
-import AwsService from '../../services/aws'
+import routes from './routes'
+import MeController from './controller'
 
-export default angular.module('app.myAccount', [uirouter])
+const component = angular.module('app.account.me', [])
   .config(routes)
-  .controller('MyAccountController', MyAccountController)
-  .service('AwsService', AwsService)
-  .name;
+  // TODO rename this MeController
+  .controller('MyAccountController', MeController)
+  .name
+
+export default component

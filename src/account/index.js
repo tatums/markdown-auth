@@ -1,11 +1,16 @@
-import angular from 'angular'
 import uiRouter from 'angular-ui-router'
 
 import login from './login'
 import me from './me'
 import config from './config'
+import AlertService from '../services/alert'
+import AwsService from '../services/aws'
 
 
-export default angular.module('account', [uiRouter, login, me])
+const component = angular.module('app.account', [uiRouter, login, me])
   .config(config)
+  .service('AlertService', AlertService)
+  .service('AwsService', AwsService)
   .name
+
+export default component

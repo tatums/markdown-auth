@@ -1,13 +1,10 @@
-import uirouter from 'angular-ui-router';
-import routes from './routes';
-import LoginController from './controller';
-import angularjwt from 'angular-jwt';
-import AwsService from '../../services/aws'
-import AlertService from '../../services/alert'
+import routes from './routes'
+import LoginController from './controller'
+import angularjwt from 'angular-jwt'
 
-export default angular.module('account.login', [uirouter, angularjwt])
+const component = angular.module('app.account.login', [angularjwt])
   .config(routes)
   .controller('LoginController', LoginController)
-  .service('AwsService', AwsService)
-  .service('AlertService', AlertService)
-  .name;
+  .name
+
+export default component
