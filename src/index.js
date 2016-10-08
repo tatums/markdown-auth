@@ -7,6 +7,7 @@ import angularMaterial from 'angular-material'
 
 import account from './account'
 import author from './author'
+import users from './users'
 
 import AWS from 'aws-sdk'
 
@@ -18,7 +19,8 @@ export const app = angular.module('app', [
   angularAnimate,
   angularMaterial,
   account,
-  author
+  author,
+  users
 ])
 .config(config)
 .run(run)
