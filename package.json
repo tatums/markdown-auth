@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "start": "npm run webpack & npm run server",
-    "server": "./node_modules/.bin/http-server ./dist",
-    "webpack": "./node_modules/.bin/webpack --watch",
+    "server": "http-server ./dist",
+    "webpack": "webpack --watch",
     "test": "ava"
   },
   "devDependencies": {

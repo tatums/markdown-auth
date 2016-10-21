@@ -13,7 +13,7 @@ export default class controller {
   save(form, validity) {
     this.AwsService.putObject(this.id, form.body)
       .then(resp => {
-        $state.go('layouts.index')
+        this.state.go('layouts.index')
       })
       .catch(err => {
         console.log(err)

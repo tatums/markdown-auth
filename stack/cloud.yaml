@@ -1,0 +1,131 @@
+---
+AWSTemplateFormatVersion: '2010-09-09'
+Description: An AWS CloudFormation template
+Resources:
+  RootS3Bucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName:
+        !Sub ${AWS::StackName}-site
+      AccessControl: PublicRead
+      WebsiteConfiguration:
+        IndexDocument: index.html
+        ErrorDocument: error.html
+      CorsConfiguration:
+        CorsRules:
+        - AllowedHeaders:
+          - "*"
+          AllowedMethods:
+          - GET
+          AllowedOrigins:
+          - "*"
+          ExposedHeaders:
+          - Date
+          Id: myCORSRuleId1
+          MaxAge: '3600'
+  RootS3BucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      Bucket:
+        Ref: RootS3Bucket
+      PolicyDocument:
+        Statement:
+        - Action:
+          - s3:GetObject
+          Effect: Allow
+          Resource:
+            !Sub arn:aws:s3:::${RootS3Bucket}/*
+          Principal: "*"
+  S3Bucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName:
+        !Sub ${AWS::StackName}-author
+      AccessControl: PublicRead
+  PublishUser:
+    Type: AWS::IAM::User
+    Properties:
+      Path: "/"
+      Policies:
+      - PolicyName:
+          !Sub ${AWS::StackName}--s3-author
+        PolicyDocument:
+          Version: '2012-10-17'
+          Statement:
+          - Action:
+            - s3:ListObject
+            - s3:GetObject
+            - s3:PutObject
+            Effect: Allow
+            Resource:
+              !Sub arn:aws:s3:::${S3Bucket}/*
+      - PolicyName:
+          !Sub ${AWS::StackName}--s3-site
+        PolicyDocument:
+          Version: '2012-10-17'
+          Statement:
+          - Action:
+            - s3:*
+            Effect: Allow
+            Resource:
+              !Sub arn:aws:s3:::${RootS3Bucket}/*
+  PublishUserAccessKey:
+    Type: AWS::IAM::AccessKey
+    Properties:
+      UserName:
+        Ref: PublishUser
+  LambdaPublisher:
+    Type: AWS::Lambda::Function
+    Properties:
+      FunctionName:
+        !Sub ${AWS::StackName}--publishLambda
+      Handler: index.handler
+      Role:
+        !GetAtt [IamRoleLambda, Arn]
+      Code:
+        ZipFile: exports.handler = function(event, context, cb) { return cb(null,
+          {message:'Hello World'}); };
+      Runtime: nodejs4.3
+      MemorySize: 512
+      Timeout: 20
+  IamRoleLambda:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+        - Effect: Allow
+          Principal:
+            Service:
+            - lambda.amazonaws.com
+          Action:
+          - sts:AssumeRole
+      Path: "/"
+  IamPolicyLambda:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyName:
+        !Sub ${AWS::StackName}-lambda
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+        - Effect: Allow
+          Action:
+          - logs:CreateLogGroup
+          - logs:CreateLogStream
+          - logs:PutLogEvents
+          Resource:
+            !Sub arn:aws:logs:${AWS::Region}-lambda*:*
+      Roles:
+      - Ref: IamRoleLambda
+Outputs:
+  PublishUserAccessKeyId:
+    Value:
+      Ref: PublishUserAccessKey
+    Description: The IAM AccessKeyId
+  PublishUserSecretAccessKey:
+    Value:
+      Fn::GetAtt:
+      - PublishUserAccessKey
+      - SecretAccessKey
+    Description: The IAM AccessSecretKey (shhhhhhh)

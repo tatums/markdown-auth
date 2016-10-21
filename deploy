@@ -1,0 +1,7 @@
+#!/bin/bash
+stack=markdown-tatum
+
+aws s3 cp dist/index.html "s3://${stack}-author/index.html" --acl public-read
+aws s3 cp dist/bundle.js "s3://${stack}-author/bundle.js" --acl public-read
+aws s3 cp dist/favicon.ico "s3://${stack}-author/favicon.ico" --acl public-read
+

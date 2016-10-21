@@ -1,0 +1,9 @@
+#!/bin/bash
+stack=markdown-tatum
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
+aws s3 sync "${DIR}/../bucket-seed/admin" "s3://${stack}-author/admin"
+
+aws s3 cp "${DIR}/../../dist/index.html" "s3://${stack}-author/index.html" --acl public-read
+aws s3 cp "${DIR}/../../dist/bundle.js" "s3://${stack}-author/bundle.js" --acl public-read
+aws s3 cp "${DIR}/../../dist/favicon.ico" "s3://${stack}-author/favicon.ico" --acl public-read

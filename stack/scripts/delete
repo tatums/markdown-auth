@@ -1,0 +1,9 @@
+#!/bin/bash
+stack=markdown-tatum
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
+aws cloudformation delete-stack \
+  --stack-name $stack
+
+  aws cloudformation wait stack-delete-complete \
+    --stack-name $stack

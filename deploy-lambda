@@ -1,0 +1,18 @@
+#!/bin/bash
+stack=markdown-tatum
+
+echo "λ installing deps"
+pushd lambda
+npm i --production
+popd
+
+echo "λ zipping"
+pushd lambda
+zip -q -r ../lambda.zip *
+popd
+
+echo "λ uploading" && \
+aws lambda update-function-code \
+  --function-name "${stack}--publishLambda" \
+  --zip-file fileb://lambda.zip
+
