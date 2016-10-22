@@ -9,6 +9,9 @@ Resources:
       BucketName:
         !Sub ${AWS::StackName}-author
       AccessControl: Private
+      WebsiteConfiguration:
+        IndexDocument: index.html
+        ErrorDocument: error.html
       CorsConfiguration:
         CorsRules:
         - AllowedHeaders:
@@ -60,10 +63,6 @@ Resources:
           Resource:
             !Sub arn:aws:s3:::${S3BucketSite}/*
           Principal: "*"
-      #NotificationConfiguration:
-        #LambdaConfigurations:
-        #  Event:
-        #  Function: LambdaPublisher
 
   IamPublishUser:
     Type: AWS::IAM::User
@@ -107,14 +106,16 @@ Resources:
       Role:
         !GetAtt [IamRoleLambda, Arn]
       Code:
-        ZipFile: exports.handler = function(event, context, cb) { return cb(null,
-          {message:'Hello World'}); };
+        ZipFile:
+          exports.handler = function(event, context, cb) { return cb(null, {message:'Hello World'}); };
       Runtime: nodejs4.3
       MemorySize: 512
       Timeout: 20
   IamRoleLambda:
     Type: AWS::IAM::Role
     Properties:
+      RoleName:
+        !Sub ${AWS::StackName}-role-lambda
       AssumeRolePolicyDocument:
         Version: '2012-10-17'
         Statement:
