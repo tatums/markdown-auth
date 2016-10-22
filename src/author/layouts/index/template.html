@@ -29,12 +29,11 @@
     <md-list>
       <md-list-item class="md-3-line" ng-repeat="item in ctl.items">
         <div class="md-list-item-text">
-          <h3> <a ui-sref="layouts.show({ id: item.Key })">{{item.Key}}</a> </h3>
+          <h3> <a ui-sref="layouts.edit({ id: item.Key })">{{item.Key}}</a> </h3>
           <p>
             <span>{{item.LastModified}}<span>
           </p>
         </div>
-        <md-button ui-sref="layouts.edit({id: item.Key})">Edit</md-button>
         <md-button ng-click="ctl.delete(item)" class="md-raised md-warn">Del</md-button>
         <md-divider inset></md-divider>
       </md-list-item>
