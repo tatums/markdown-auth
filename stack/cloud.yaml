@@ -2,7 +2,30 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Description: An AWS CloudFormation template
 Resources:
-  RootS3Bucket:
+
+  S3BucketAuthor:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName:
+        !Sub ${AWS::StackName}-author
+      AccessControl: Private
+      CorsConfiguration:
+        CorsRules:
+        - AllowedHeaders:
+          - "*"
+          AllowedMethods:
+          - GET
+          - PUT
+          - POST
+          - DELETE
+          AllowedOrigins:
+          - "*"
+          ExposedHeaders:
+          - Date
+          Id: myCORSRuleId1
+          MaxAge: '3600'
+
+  S3BucketSite:
     Type: AWS::S3::Bucket
     Properties:
       BucketName:
@@ -22,29 +45,31 @@ Resources:
           ExposedHeaders:
           - Date
           Id: myCORSRuleId1
-          MaxAge: '3600'
-  RootS3BucketPolicy:
+          MaxAge: 3600
+
+  S3BucketSitePolicy:
     Type: AWS::S3::BucketPolicy
     Properties:
       Bucket:
-        Ref: RootS3Bucket
+        Ref: S3BucketSite
       PolicyDocument:
         Statement:
         - Action:
           - s3:GetObject
           Effect: Allow
           Resource:
-            !Sub arn:aws:s3:::${RootS3Bucket}/*
+            !Sub arn:aws:s3:::${S3BucketSite}/*
           Principal: "*"
-  S3Bucket:
-    Type: AWS::S3::Bucket
-    Properties:
-      BucketName:
-        !Sub ${AWS::StackName}-author
-      AccessControl: PublicRead
-  PublishUser:
+      #NotificationConfiguration:
+        #LambdaConfigurations:
+        #  Event:
+        #  Function: LambdaPublisher
+
+  IamPublishUser:
     Type: AWS::IAM::User
     Properties:
+      UserName:
+        !Sub ${AWS::StackName}-user
       Path: "/"
       Policies:
       - PolicyName:
@@ -53,12 +78,10 @@ Resources:
           Version: '2012-10-17'
           Statement:
           - Action:
-            - s3:ListObject
-            - s3:GetObject
-            - s3:PutObject
+            - s3:*
             Effect: Allow
             Resource:
-              !Sub arn:aws:s3:::${S3Bucket}/*
+              !Sub arn:aws:s3:::${S3BucketAuthor}*
       - PolicyName:
           !Sub ${AWS::StackName}--s3-site
         PolicyDocument:
@@ -68,12 +91,13 @@ Resources:
             - s3:*
             Effect: Allow
             Resource:
-              !Sub arn:aws:s3:::${RootS3Bucket}/*
+              !Sub arn:aws:s3:::${S3BucketSite}*
+
   PublishUserAccessKey:
     Type: AWS::IAM::AccessKey
     Properties:
       UserName:
-        Ref: PublishUser
+        Ref: IamPublishUser
   LambdaPublisher:
     Type: AWS::Lambda::Function
     Properties:
@@ -115,7 +139,7 @@ Resources:
           - logs:CreateLogStream
           - logs:PutLogEvents
           Resource:
-            !Sub arn:aws:logs:${AWS::Region}-lambda*:*
+            !Sub arn:aws:logs:${AWS::Region}:*:*
       Roles:
       - Ref: IamRoleLambda
 Outputs:

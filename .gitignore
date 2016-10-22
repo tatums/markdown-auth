@@ -1,2 +1,3 @@
 dist/bundle.js
 test/config.json
+lambda/config.json

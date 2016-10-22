@@ -4,7 +4,7 @@ import 'amazon-cognito-identity-js'
 
 class AwsService {
   constructor() {
-    this.bucket = 'markdown-author'
+    this.bucket = 'markdown-tatum-author'
     this.userPoolId = 'us-east-1_BGU9CKFCM'
     this.clientId = '3q8g2135i3sn30g0cpo4bu4uop'
     this.identityPoolId = 'us-east-1:f08f199c-4e76-43b9-a819-364360943c84'

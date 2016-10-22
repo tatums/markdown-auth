@@ -6,16 +6,17 @@
   </md-toolbar>
 
   <md-content class="md-whiteframe-z2 move-up" layout-padding>
-    <form ng-submit="ctl.save(ctl.form, pageForm.$valid)" name="pageForm">
-      <md-input-container class="md-block">
-        <!--<label>Content</label>-->
-        <textarea ng-model="ctl.form.body" name="body" md-select-on-focus></textarea>
-      </md-input-container>
 
-      <p ng-if="pageForm.body.$error.required && ctl.pageForm.body.$touched">Page content is required.</p>
+    <div ng-model="ctl.body" ui-ace="{
+    useWrapMode : true,
+    showGutter: true,
+    mode: 'html',
+    firstLineNumber: 1,
+    onLoad: aceLoaded,
+    onChange: aceChanged
+    }">
+    </div>
+    <md-button ng-click="ctl.save()" class="md-raised md-primary">Save</md-button>
 
-      <md-button ui-sref="pages.index">Cancel</md-button>
-      <md-button type="submit" class="md-raised md-primary">Save</md-button>
-    </form>
   </md-content>
 </div>

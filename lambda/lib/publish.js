@@ -1,13 +1,13 @@
 const fs = require('fs')
 const AWS = require('aws-sdk')
 const mime  = require('mime-types')
+const glob = require("glob")
 const config = require('../config.json')
 
 const s3 = new AWS.S3({
   accessKeyId: config.accessKeyId,
   secretAccessKey: config.secretAccessKey,
 })
-
 
 function putObject(path) {
   const Key = path.replace(new RegExp(/\/tmp\/build\//), '')
@@ -20,7 +20,6 @@ function putObject(path) {
   return s3.putObject(params).promise();
 }
 
-const glob = require("glob")
 
 function readHtmlFiles () {
   return new Promise((resolve, reject) => {
@@ -32,6 +31,7 @@ function readHtmlFiles () {
 }
 
 function uploadFiles(files) {
+  console.log("\nstart of publishing\n");
   return Promise.all(
     files.map(file => { return putObject(file) })
   )

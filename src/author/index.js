@@ -8,8 +8,12 @@ import PagesEdit from './pages/edit'
 
 import config from './config'
 
+// not supported by es6
+import 'angular-ui-ace'
+import './style.css'
+
 const component = angular.module('author',
-  [uiRouter, LayoutsIndex, LayoutsShow, LayoutsEdit, PagesIndex, PagesEdit])
+  [uiRouter, LayoutsIndex, LayoutsShow, LayoutsEdit, PagesIndex, PagesEdit, 'ui.ace'])
   .config(config)
   .name
 

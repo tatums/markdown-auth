@@ -4,7 +4,12 @@ const AWS = require('aws-sdk')
 const mime  = require('mime-types')
 const _ = require('underscore')
 const config = require('../config.json')
-AWS.config.loadFromPath('./config.json')
+
+AWS.config.update({
+  region: config.region,
+  accessKeyId: config.accessKeyId,
+  secretAccessKey: config.secretAccessKey
+});
 
 const s3 = new AWS.S3()
 const download = (filePath) => {
@@ -20,6 +25,7 @@ const download = (filePath) => {
 }
 
 module.exports = () => {
+  console.log(`\nstarting download from ${config.sourceBucket}\n`);
   return s3.listObjectsV2({
     Bucket: config.sourceBucket,
     //Prefix: '/'

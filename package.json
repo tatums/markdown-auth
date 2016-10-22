@@ -15,6 +15,7 @@
     "angular-aria": "^1.5.7",
     "angular-jwt": "0.0.9",
     "angular-material": "^1.1.0-rc.5",
+    "angular-ui-ace": "0.2.3",
     "angular-ui-router": "0.3.1",
     "ava": "0.16.0",
     "babel-core": "6.10.4",

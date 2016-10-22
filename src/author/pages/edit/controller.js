@@ -5,13 +5,11 @@ class controller {
     this.page = page
     this.AwsService = AwsService
     this.state = $state
-    this.form = {
-      body: page.Body.toString()
-    }
+    this.body = page.Body.toString()
   }
 
   save(form, validity) {
-    this.AwsService.putObject(this.id, form.body)
+    this.AwsService.putObject(this.id, this.body)
       .then(resp => {
         console.log(resp)
         this.state.go('pages.index')

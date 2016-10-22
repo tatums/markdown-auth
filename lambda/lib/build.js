@@ -22,6 +22,7 @@ module.exports = () => {
       }))
       .build(function(err, files) {
         if (err) { reject(err) }
+        console.log('\nbuild complete\n')
         resolve(files)
       })
   })
