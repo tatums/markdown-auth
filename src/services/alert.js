@@ -4,7 +4,7 @@ class AlertService {
     this.mdToast = $mdToast
   }
 
-  displayAlert(message) {
+  displayAlert(message, options) {
     this.mdToast.show(
       this.mdToast.simple()
         .textContent(message)

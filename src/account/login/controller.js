@@ -17,7 +17,7 @@ export default class controller {
       }
     }
 
-    this.submit = function (form, validity) {
+    this.submit = (form, validity) => {
       if (validity) {
         this.AwsService.auth(form.username, form.password)
         .then((resp) => {

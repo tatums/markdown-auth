@@ -8,15 +8,18 @@
   <md-content class="md-whiteframe-z2 move-up" layout-padding>
 
     <div ng-model="ctl.body" ui-ace="{
-    useWrapMode : true,
-    showGutter: true,
     mode: 'html',
-    firstLineNumber: 1,
     onLoad: aceLoaded,
     onChange: aceChanged
     }">
     </div>
+
     <md-button ng-click="ctl.save()" class="md-raised md-primary">Save</md-button>
 
+    <md-checkbox ng-model="ctl.saveInline"
+                 aria-label="Stay Here"
+                 class="md-warn" flex>
+      Save Inline
+    </md-checkbox>
   </md-content>
 </div>
