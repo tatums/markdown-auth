@@ -16,7 +16,6 @@ class controller {
     this.title = "Layouts"
     this.items = items
     this.AwsService = AwsService
-
   }
 
   delete (item) {
