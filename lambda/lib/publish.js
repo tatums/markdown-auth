@@ -63,7 +63,11 @@ function deleteFiles (files) {
       Bucket: config.targetBucket,
       Delete: { Objects: objects  }
     };
-    return s3.deleteObjects(params).promise()
+    if (objects.length > 0) {
+      return s3.deleteObjects(params).promise()
+    } else {
+      return Promise.resolve([])
+    }
   })
 }
 
