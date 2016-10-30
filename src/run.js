@@ -46,10 +46,11 @@ function getIdToken(email) {
 
 export default function run($rootScope, $state, AwsService) {
   $rootScope.$on("$stateChangeStart", function(event, toState, toParams, fromState, fromParams){
+    $rootScope.user = null
     $rootScope.currentNavItem = toState.navItem
     if ( toState.requireLogin) {
-      AwsService.getUserFromLocal()
       let user = AwsService.currentUser()
+      $rootScope.user = user
       if ( !tokenValid(user) ) {
         $state.transitionTo('account.login')
         event.preventDefault()

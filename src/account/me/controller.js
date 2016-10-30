@@ -9,7 +9,7 @@ export default class controller {
 
     this.signout = () => {
       AwsService.signout()
-      $state.go('account.login')
+      this.state.go('account.login')
     }
   }
 

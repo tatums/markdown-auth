@@ -14,16 +14,17 @@ class AwsService {
       ClientId : this.clientId
     })
 
-    this.currentUser = function () {
+    this.currentUser = () => {
+      console.log('currentUser', this.userPool.getCurrentUser());
       return this.userPool.getCurrentUser()
     }
 
     this.getJwtToken = () => {
       return new Promise((resolve, reject) => {
-        const cognitoUser = this.userPool.getCurrentUser();
-        if (cognitoUser != null) {
-          cognitoUser.getSession(function(err, session) {
-            if (err) { reject(err) }
+        let user = this.currentUser()
+        if (user != null) {
+          user.getSession((err, session) => {
+            if (err) reject(err)
             resolve(session)
           });
         } else {
@@ -41,7 +42,6 @@ class AwsService {
       });
     }
 
-
     this.refreshCredentials = () => {
       return new Promise((resolve, reject) => {
         AWS.config.region = 'us-east-1'
@@ -52,8 +52,21 @@ class AwsService {
       })
     }
 
+    this.getAwsUser = () => {
+      if (AWS.config.credentials && AWS.config.credentials.expired != true) {
+        return Promise.resolve(AWS)
+      } else {
+        return this.getJwtToken()
+          .then(this.cognitoCredentials)
+          .then(credentials => {
+            AWS.config.credentials = credentials
+            return this.refreshCredentials()
+          })
+      }
+    }
+
     this.cognitoUser = () => {
-      const user = this.currentUser()
+      const user = this.userPool.getCurrentUser()
       return new Promise(function(resolve, reject){
         if (user != null) {
           user.getSession(function(err, session) {
@@ -67,28 +80,20 @@ class AwsService {
   } // END of constructor
 
   listObjects (prefix) {
-    return this.getJwtToken()
-      .then(this.cognitoCredentials)
-      .then(credentials => {
-        AWS.config.credentials = credentials
-        return this.refreshCredentials()
-      })
+    return this.getAwsUser()
       .then(Aws => {
         let s3 = new Aws.S3()
         return s3.listObjects(
           { Bucket: this.bucket, Prefix: prefix }
         ).promise();
       })
-      .then(resp => { return resp.Contents })
+      .then(resp => {
+        return resp.Contents
+      })
   }
 
   putObject (key, body) {
-    return this.getJwtToken()
-      .then(this.cognitoCredentials)
-      .then(credentials => {
-        AWS.config.credentials = credentials
-        return this.refreshCredentials()
-      })
+    return this.getAwsUser()
       .then(Aws => {
         let s3 = new Aws.S3()
         return s3.putObject({ Bucket: this.bucket, Key: key, Body: body })
@@ -97,12 +102,7 @@ class AwsService {
   }
 
   getObject (key) {
-    return this.getJwtToken()
-      .then(this.cognitoCredentials)
-      .then(credentials => {
-        AWS.config.credentials = credentials
-        return this.refreshCredentials()
-      })
+    return this.getAwsUser()
       .then(Aws => {
         let s3 = new Aws.S3()
         return s3.getObject({ Bucket: this.bucket, Key: key }).promise();
@@ -110,12 +110,7 @@ class AwsService {
   }
 
   deleteObject (key) {
-    return this.getJwtToken()
-      .then(this.cognitoCredentials)
-      .then(credentials => {
-        AWS.config.credentials = credentials
-        return this.refreshCredentials()
-      })
+    return this.getAwsUser()
       .then(Aws => {
         let s3 = new Aws.S3()
         return s3.deleteObject({ Bucket: this.bucket, Key: key }).promise();
@@ -145,7 +140,7 @@ class AwsService {
   }
 
   signout () {
-    let user = this.currentUser()
+    let user = this.userPool.getCurrentUser()
     user.signOut()
   }
 
