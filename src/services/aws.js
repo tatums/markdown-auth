@@ -80,7 +80,6 @@ class AwsService {
         ).promise();
       })
       .then(resp => { return resp.Contents })
-      .catch(err => { console.log(err) })
   }
 
   putObject (key, body) {
@@ -95,7 +94,6 @@ class AwsService {
         return s3.putObject({ Bucket: this.bucket, Key: key, Body: body })
           .promise()
       })
-      .catch(err => { console.log(err) })
   }
 
   getObject (key) {
@@ -109,7 +107,6 @@ class AwsService {
         let s3 = new Aws.S3()
         return s3.getObject({ Bucket: this.bucket, Key: key }).promise();
       })
-      .catch(err => { console.log(err) })
   }
 
   deleteObject (key) {
@@ -123,7 +120,6 @@ class AwsService {
         let s3 = new Aws.S3()
         return s3.deleteObject({ Bucket: this.bucket, Key: key }).promise();
       })
-      .catch(err => { console.log(err) })
     }
 
   getUserFromLocal () {

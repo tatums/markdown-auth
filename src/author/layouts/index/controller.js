@@ -10,22 +10,25 @@ const defaultBody = `<!doctype html>
   </body>
 </html>`
 
-
 class controller {
-  constructor(AwsService, $state, $filter, items) {
+  constructor(AwsService, items, $scope) {
     this.title = "Layouts"
     this.items = items
     this.AwsService = AwsService
+    this.scope = $scope
   }
 
+
   delete (item) {
-    // TODO Move this into the promise.
-    // Figure out why its not working as expected.
-    let index = this.items.indexOf(item)
-    this.items.splice(index, 1)
     this.AwsService.deleteObject(item.Key)
-      .then((resp) => {
-      }).catch((err) => {
+      .then(resp => {
+        this.scope.$apply(() => {
+          let index = this.items.indexOf(item)
+          this.items.splice(index, 1)
+          this.deleted = true
+        })
+      })
+      .catch(err => {
         console.log('err: ', err)
       })
   }
@@ -34,15 +37,16 @@ class controller {
     let key = `admin/layouts/${form.key}`
     this.AwsService.putObject(key, defaultBody)
       .then((resp) => {
-        let date = new Date()
-        this.items.unshift({ Key: key, LastModified: date })
-        console.log(resp)
+        this.scope.$apply(() => {
+          let date = new Date()
+          this.items.unshift({ Key: key, LastModified: date })
+        })
       }).catch((err) => {
         console.log(err)
       })
   }
 
 }
-controller.$inject = ['AwsService', '$state', '$filter', 'items']
+controller.$inject = ['AwsService', 'items', '$scope']
 
 export default controller
