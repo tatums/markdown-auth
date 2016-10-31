@@ -1,6 +1,6 @@
 <h2 class="md-headline">Forgot Password</h2>
 
-<form ng-submit="ctl.forgot(form, loginForm.$valid)" name="loginForm" novalidate>
+<form ng-submit="ctl.forgot(form, forgotForm.$valid)" name="forgotForm" novalidate>
 
   <md-input-container>
     <label for="username">Username/Email</label>
@@ -11,4 +11,10 @@
 
 </form>
 
-<a ui-sref="account.login" href="#">Login</a>
+<div>
+  <a ui-sref="account.login" href="#">Login</a>
+</div>
+
+<div>
+  <a ui-sref="account.claim" href="#">Already have a code?</a>
+</div>

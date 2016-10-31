@@ -213,6 +213,23 @@ class AwsService {
     })
   }
 
+  claim (username, verificationCode, newPassword) {
+    return new Promise((resolve, reject) => {
+      var cognitoUser = new AWS.CognitoIdentityServiceProvider.CognitoUser({
+        Username : username,
+        Pool : this.userPool
+      })
+      cognitoUser.confirmPassword(verificationCode, newPassword, {
+        onSuccess: (result) => {
+          resolve(result)
+        },
+        onFailure: (err) => {
+          reject(err)
+        }
+      })
+    })
+  }
+
   signup (attr) {
     let attributeList = [];
     let dataEmail = {

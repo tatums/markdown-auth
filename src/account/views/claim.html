@@ -1,1 +1,24 @@
-Claim
+<h2 class="md-headline">Reclaim Password</h2>
+
+<form ng-submit="ctl.claim(form, claimForm.$valid)" name="claimForm" novalidate>
+
+  <md-input-container>
+    <label for="username">username/email</label>
+    <input id="username" ng-model="form.username" aria-label="username" name="username" type="text" required>
+  </md-input-container>
+
+  <md-input-container>
+    <label for="code">Verification Code</label>
+    <input id="code" ng-model="form.code" aria-label="code" name="code" type="text" required>
+  </md-input-container>
+
+  <md-input-container>
+    <label for="password">New Password</label>
+    <input id="password" ng-model="form.password" aria-label="password" name="password" type="password" required>
+  </md-input-container>
+
+  <md-button class="md-raised" type="submit">Send</md-button>
+
+</form>
+
+<a ui-sref="account.login" href="#">Login</a>

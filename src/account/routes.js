@@ -32,7 +32,7 @@ export default function routes($stateProvider) {
     .state('account.claim', {
       url: '/account/forgot/claim',
       template: require('./views/claim.html'),
-      controller: 'claimController',
+      controller: claimController,
       controllerAs: 'ctl',
       requireLogin: false
     })
