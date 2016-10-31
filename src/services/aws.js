@@ -14,8 +14,8 @@ class AwsService {
       ClientId : this.clientId
     })
 
+    this.user = null
     this.currentUser = () => {
-      console.log('currentUser', this.userPool.getCurrentUser());
       return this.userPool.getCurrentUser()
     }
 
@@ -67,6 +67,7 @@ class AwsService {
 
     this.cognitoUser = () => {
       const user = this.userPool.getCurrentUser()
+      console.log('user', user);
       return new Promise(function(resolve, reject){
         if (user != null) {
           user.getSession(function(err, session) {
@@ -117,16 +118,17 @@ class AwsService {
       })
     }
 
-  getUserFromLocal () {
-    var cognitoUser = this.userPool.getCurrentUser();
-    if (cognitoUser != null) {
-      cognitoUser.getSession(function(err, session) {
-        if (err) {
-          return err
-        }
-        return session
-      });
-    }
+  getUserAttributes () {
+    this.cognitoUser()
+      .then(user => {
+        user.getUserAttributes(function(err, result) {
+          if (err) {
+            alert(err);
+          }
+          console.log(result);
+        });
+
+      })
   }
 
   changePassword (user, currentPassword, password, passwordConfirmation) {
@@ -167,8 +169,8 @@ class AwsService {
     });
 
     let cognitoUser = new CognitoIdentityServiceProvider.CognitoUser({
-        Username : username,
-        Pool : this.userPool
+      Username : username,
+      Pool : this.userPool
     });
 
     return new Promise((resolve, reject) => {
@@ -180,18 +182,36 @@ class AwsService {
               'cognito-idp.us-east-1.amazonaws.com/us-east-1_BGU9CKFCM' : result.getIdToken().getJwtToken(),
             }
           })
-          resolve({
-            success: true, accessToken: result.getAccessToken().getJwtToken(),
-            idToken: result.getIdToken().getJwtToken()
-          })
+          resolve(cognitoUser)
         },
         onFailure: function(err) {
           reject({ success: false, err: err })
-        },
+        }
       });
     })
   }
 
+  forgotPassword (username) {
+    var cognitoUser = new AWS.CognitoIdentityServiceProvider.CognitoUser({
+      Username : username,
+      Pool : this.userPool
+    });
+
+    return new Promise((resolve, reject) => {
+      cognitoUser.forgotPassword({
+        onSuccess: (result) => {
+          resolve(result)
+        },
+        onFailure: (err) => {
+          reject(err)
+        },
+        //According to AWS this Needs to be here
+        inputVerificationCode: (data) => {
+          console.log('code', data);
+        }
+      })
+    })
+  }
 
   signup (attr) {
     let attributeList = [];

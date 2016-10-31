@@ -1,0 +1,14 @@
+<h2 class="md-headline">Forgot Password</h2>
+
+<form ng-submit="ctl.forgot(form, loginForm.$valid)" name="loginForm" novalidate>
+
+  <md-input-container>
+    <label for="username">Username/Email</label>
+    <input id="username" ng-model="form.username" aria-label="username" name="username" type="text" required>
+  </md-input-container>
+
+  <md-button class="md-raised" type="submit">Send</md-button>
+
+</form>
+
+<a ui-sref="account.login" href="#">Login</a>

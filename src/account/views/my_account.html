@@ -6,6 +6,8 @@
 
 <md-button ng-click="myAccount.signout()" class="md-raised">Signout</md-button>
 
+<md-button ng-click="myAccount.AwsService.getUserAttributes()" class="md-raised">getUserAttributes</md-button>
+
 <hr />
 
 <form ng-submit="myAccount.changePassword(form, changePasswordForm.$valid)" name="changePasswordForm" novalidate>
@@ -28,10 +30,6 @@
 
 </form>
 
-
 <code>
   {{myAccount.currentUser}}
 </code>
-
-
-

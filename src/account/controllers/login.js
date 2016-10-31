@@ -31,5 +31,10 @@ export default class controller {
       }
     }
   }
+
+  forgotPassword() {
+    this.AwsService.forgotPassword()
+  }
+
 }
 controller.$inject = ['AwsService', 'AlertService', '$state']
