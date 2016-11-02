@@ -13,7 +13,6 @@ class controller {
   save() {
     this.AwsService.putObject(this.id, this.body)
       .then(resp => {
-        console.log(this.AlertService);
         this.AlertService.displayAlert('Saved...')
         if (this.saveInline == false) {
           this.state.go('pages.index')

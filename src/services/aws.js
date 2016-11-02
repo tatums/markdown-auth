@@ -207,7 +207,7 @@ class AwsService {
         },
         //According to AWS this Needs to be here
         inputVerificationCode: (data) => {
-          console.log('code', data);
+          resolve(data)
         }
       })
     })

@@ -23,7 +23,6 @@ export default class controller {
       this.state.go('layouts.index')
     })
     .catch(err => {
-      console.log(err)
       this.AlertService.displayAlert(err.message)
     })
   }

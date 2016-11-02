@@ -1,19 +1,20 @@
 export default class controller {
-  constructor(AwsService) {
+  constructor(AwsService, AlertService) {
     this.AwsService = AwsService
+    this.AlertService = AlertService
   }
 
   claim(form, validity) {
-    console.log(form, validity);
     if (validity) {
       this.AwsService.claim(form.username, form.code, form.password)
       .then(resp => {
         console.log('resp', resp);
+        this.AlertService.displayAlert(`Success ᕕ( ᐛ )ᕗ`)
       })
       .catch(err => {
-        console.log('err',err);
+        this.AlertService.displayAlert(err.message)
       })
     }
   }
 }
-controller.$inject = ['AwsService']
+controller.$inject = ['AwsService', 'AlertService']

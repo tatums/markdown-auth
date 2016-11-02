@@ -1,15 +1,19 @@
 export default class controller {
-  constructor(AwsService) {
+  constructor(AwsService, AlertService) {
     this.AwsService = AwsService
+    this.AlertService = AlertService
   }
 
   forgot(form, validity) {
     if (validity) {
       this.AwsService.forgotPassword(form.username)
       .then(resp => {
-        console.log('resp', resp);
+        this.AlertService.displayAlert(`An ${resp.CodeDeliveryDetails.DeliveryMedium} was sent.`)
+      })
+      .catch(err => {
+        this.AlertService.displayAlert(err.message)
       })
     }
   }
 }
-controller.$inject = ['AwsService']
+controller.$inject = ['AwsService', 'AlertService']
