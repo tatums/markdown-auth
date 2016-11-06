@@ -14,7 +14,7 @@ class controller {
   }
 
   create (form, validity) {
-    let key = `admin/src/pages/${form.key}`
+    let key = `admin/src/${form.key}`
     this.AwsService.putObject(key, defaultBody)
       .then((resp) => {
         let date = new Date()

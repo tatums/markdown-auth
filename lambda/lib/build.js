@@ -17,7 +17,7 @@ module.exports = () => {
       })
       .source(sourcePath)
       .destination('/tmp/build')
-      .clean(false)
+      .clean(true)
       .use(discoverPartials({
         directory: "/tmp/admin/layouts",
         pattern: /\.hbs$/
