@@ -14,8 +14,11 @@
     "glob": "7.0.6",
     "handlebars": "4.0.5",
     "metalsmith": "2.2.0",
+    "metalsmith-collections": "0.9.0",
+    "metalsmith-discover-partials": "0.1.0",
     "metalsmith-layouts": "1.6.5",
     "metalsmith-markdown": "0.2.1",
+    "metalsmith-permalinks": "0.5.0",
     "mime-types": "2.1.11",
     "underscore": "1.8.3",
     "unzip": "0.1.11"
