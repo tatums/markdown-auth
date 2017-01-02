@@ -29,6 +29,13 @@ export targetBucket="markdown-tatum-site",
 export region="us-east-1"
 ```
 
+
+## Deploy the /lambda
+
+    $ cd lambda
+    $ npm run deploy
+
+
 ## Admin site
 [http://markdown-tatum-author.s3-website-us-east-1.amazonaws.com/#/account/login](http://markdown-tatum-author.s3-website-us-east-1.amazonaws.com/#/account/login)
 
