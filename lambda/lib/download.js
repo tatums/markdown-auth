@@ -3,16 +3,15 @@ const path = require('path')
 const AWS = require('aws-sdk')
 const mime  = require('mime-types')
 const _ = require('underscore')
-const config = require('../config.json')
 
 AWS.config.update({
-  region: config.region
+  region: process.env.region
 });
 
 const s3 = new AWS.S3()
 const download = (filePath) => {
   return s3.getObject({
-    Bucket: config.sourceBucket,
+    Bucket: process.env.sourceBucket,
     Key: filePath
   }).promise()
     .then(resp => {
@@ -23,9 +22,9 @@ const download = (filePath) => {
 }
 
 module.exports = () => {
-  console.log(`\nstarting download from ${config.sourceBucket}\n`);
+  console.log(`\nstarting download from ${process.env.sourceBucket}\n`);
   return s3.listObjectsV2({
-    Bucket: config.sourceBucket,
+    Bucket: process.env.sourceBucket,
     //Prefix: '/'
   }).promise()
     .then(objects => {

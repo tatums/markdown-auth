@@ -6,14 +6,13 @@
     $ ./stack/scripts/create
 
 
-## Config
-`./lambda/config.json`
-```json
-{
-  "sourceBucket": "markdown-tatum-author",
-  "targetBucket": "markdown-tatum-site",
-  "region": "us-east-1"
-}
+## Required ENV variables
+`.envrc`
+```.envrc
+export stack='markdown-tatum'
+export sourceBucket="markdown-tatum-author",
+export targetBucket="markdown-tatum-site",
+export region="us-east-1"
 ```
 
 ## Admin site

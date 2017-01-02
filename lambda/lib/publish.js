@@ -3,7 +3,6 @@ const AWS = require('aws-sdk')
 const mime  = require('mime-types')
 const glob = require("glob")
 const _ = require('underscore')
-const config = require('../config.json')
 
 const buildPrefix = '/tmp/build'
 const s3 = new AWS.S3({})
@@ -11,7 +10,7 @@ const s3 = new AWS.S3({})
 function putObject(path) {
   const Key = path.replace(new RegExp(/\/tmp\/build\//), '')
   const params = {
-    Bucket: config.targetBucket,
+    Bucket: process.env.targetBucket,
     Key: Key,
     Body: fs.readFileSync(path, "utf8"),
     ContentType: mime.lookup(Key),
@@ -39,7 +38,7 @@ function uploadFiles(files) {
 function filesMarkedForDeletion (files) {
   return new Promise((resolve, reject) => {
     s3.listObjectsV2({
-      Bucket: config.targetBucket
+      Bucket: process.env.targetBucket
     }, function(err, data) {
       if (err) reject(err)
       var items = _.reject(data.Contents, (item) => {
@@ -57,7 +56,7 @@ function deleteFiles (files) {
       return {Key: obj.Key}
     })
     var params = {
-      Bucket: config.targetBucket,
+      Bucket: process.env.targetBucket,
       Delete: { Objects: objects  }
     };
     if (objects.length > 0) {

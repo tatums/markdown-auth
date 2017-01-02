@@ -78,6 +78,12 @@ Resources:
       Runtime: nodejs4.3
       MemorySize: 512
       Timeout: 20
+      Environment:
+        Variables:
+          sourceBucket: !Sub ${AWS::StackName}-author
+          targetBucket: !Sub ${AWS::StackName}-site
+          region: !Sub ${AWS::Region}
+
   IamRoleLambda:
     Type: AWS::IAM::Role
     Properties:
