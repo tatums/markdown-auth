@@ -64,39 +64,6 @@ Resources:
             !Sub arn:aws:s3:::${S3BucketSite}/*
           Principal: "*"
 
-  IamPublishUser:
-    Type: AWS::IAM::User
-    Properties:
-      UserName:
-        !Sub ${AWS::StackName}-user
-      Path: "/"
-      Policies:
-      - PolicyName:
-          !Sub ${AWS::StackName}--s3-author
-        PolicyDocument:
-          Version: '2012-10-17'
-          Statement:
-          - Action:
-            - s3:*
-            Effect: Allow
-            Resource:
-              !Sub arn:aws:s3:::${S3BucketAuthor}*
-      - PolicyName:
-          !Sub ${AWS::StackName}--s3-site
-        PolicyDocument:
-          Version: '2012-10-17'
-          Statement:
-          - Action:
-            - s3:*
-            Effect: Allow
-            Resource:
-              !Sub arn:aws:s3:::${S3BucketSite}*
-
-  PublishUserAccessKey:
-    Type: AWS::IAM::AccessKey
-    Properties:
-      UserName:
-        Ref: IamPublishUser
   LambdaPublisher:
     Type: AWS::Lambda::Function
     Properties:
@@ -141,16 +108,15 @@ Resources:
           - logs:PutLogEvents
           Resource:
             !Sub arn:aws:logs:${AWS::Region}:*:*
+        - Effect: Allow
+          Action:
+          - s3:*
+          Resource:
+            !Sub arn:aws:s3:::${S3BucketAuthor}*
+        - Effect: Allow
+          Action:
+          - s3:*
+          Resource:
+            !Sub arn:aws:s3:::${S3BucketSite}*
       Roles:
       - Ref: IamRoleLambda
-Outputs:
-  PublishUserAccessKeyId:
-    Value:
-      Ref: PublishUserAccessKey
-    Description: The IAM AccessKeyId
-  PublishUserSecretAccessKey:
-    Value:
-      Fn::GetAtt:
-      - PublishUserAccessKey
-      - SecretAccessKey
-    Description: The IAM AccessSecretKey (shhhhhhh)

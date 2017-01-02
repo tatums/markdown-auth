@@ -6,9 +6,7 @@ const _ = require('underscore')
 const config = require('../config.json')
 
 AWS.config.update({
-  region: config.region,
-  accessKeyId: config.accessKeyId,
-  secretAccessKey: config.secretAccessKey
+  region: config.region
 });
 
 const s3 = new AWS.S3()

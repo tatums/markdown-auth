@@ -4,6 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "zip": "npm i --production && zip -q -r ./lambda.zip *",
+    "update-function": "aws lambda update-function-code --function-name \"${stack}--publishLambda\" --zip-file fileb://lambda.zip",
+    "deploy": "npm run zip && npm run update-function",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",

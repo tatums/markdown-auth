@@ -1,8 +1,5 @@
 'use strict'
 
-//console.log(process.env['PATH'])
-//process.env['PATH'] = process.env['PATH'] + ':' + process.env['LAMBDA_TASK_ROOT']
-
 const download = require('./lib/download')
 const build = require('./lib/build')
 const publish = require('./lib/publish')

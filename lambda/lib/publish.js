@@ -6,10 +6,7 @@ const _ = require('underscore')
 const config = require('../config.json')
 
 const buildPrefix = '/tmp/build'
-const s3 = new AWS.S3({
-  accessKeyId: config.accessKeyId,
-  secretAccessKey: config.secretAccessKey,
-})
+const s3 = new AWS.S3({})
 
 function putObject(path) {
   const Key = path.replace(new RegExp(/\/tmp\/build\//), '')

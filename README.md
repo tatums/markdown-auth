@@ -6,6 +6,19 @@
     $ ./stack/scripts/create
 
 
+## Config
+`./lambda/config.json`
+```json
+{
+  "sourceBucket": "markdown-tatum-author",
+  "targetBucket": "markdown-tatum-site",
+  "region": "us-east-1"
+}
+```
+
+## Admin site
+[http://markdown-tatum-author.s3-website-us-east-1.amazonaws.com/#/account/login](http://markdown-tatum-author.s3-website-us-east-1.amazonaws.com/#/account/login)
+
 
 http://docs.aws.amazon.com/cognito/latest/developerguide/amazon-cognito-user-pools-using-tokens-with-identity-providers.html
 
