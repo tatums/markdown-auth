@@ -1,5 +1,5 @@
 #!/bin/bash
-stack=markdown-tatum
+[ -z "$stack" ] && echo "ERROR You need to setup a \"stack\" variable" && exit 1;
 
 aws s3 cp dist/index.html "s3://${stack}-author/index.html" --acl public-read
 aws s3 cp dist/bundle.js "s3://${stack}-author/bundle.js" --acl public-read

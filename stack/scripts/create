@@ -1,6 +1,9 @@
 #!/bin/bash
 
-stack=markdown-tatum
+[ -z "$stack" ] && echo "ERROR You need to setup a \"stack\" variable" && exit 1;
+
+## Sets the current DIR.  Then we can reference files relative to DIR,
+## thus letting this script to run from ANY dir.
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 aws cloudformation create-stack \
