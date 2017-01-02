@@ -1,9 +1,23 @@
+# markdown-auth
+Markdown source editor using Serverless technology.
+
+
+* `s3` to serve Static HTML
+* `Lambda` to convert Markdown to HTML
+* `Cognito` for Authentication
+* `Cloudformation` to build resources
+* es6
+* webpack
+* angular
+* [cognito-identity-js](https://github.com/aws/amazon-cognito-identity-js)
+
 
 ## Setup
-
-* Create the stack
+Create the cloudformation stack
 
     $ ./stack/scripts/create
+
+**!NOTE** *- Not all the resources needed are supported by cloudformation (eg cognito).*
 
 
 ## Required ENV variables
@@ -45,4 +59,3 @@ Cognito
 [x] - Cors policy for the s3 bucket
 [ ] - Cognito -> s3 permission
 [ ] - S3 Lambda Trigger
-
