@@ -8,4 +8,7 @@ export default function routing($stateProvider) {
     .state('pages', {
       template: require('./../base_template.html'),
     })
+    .state('posts', {
+      template: require('./../base_template.html'),
+    })
 }

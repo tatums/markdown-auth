@@ -8,9 +8,7 @@ export default function routes($stateProvider) {
       controllerAs: 'ctl',
       navItem: 'pages',
       resolve: {
-        pages: (AwsService) => {
-          return AwsService.listObjects('admin/src')
-        }
+        pages: (AwsService) => AwsService.listObjects('admin/src/pages')
       },
       requireLogin: true
     })

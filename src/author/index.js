@@ -4,6 +4,8 @@ import LayoutsIndex from './layouts/index'
 import LayoutsEdit from './layouts/edit'
 import PagesIndex from './pages/index'
 import PagesEdit from './pages/edit'
+import PostsIndex from './posts/index'
+import PostsEdit from './posts/edit'
 
 import config from './config'
 
@@ -15,7 +17,14 @@ import 'angular-ui-ace'
 import './style.css'
 
 const component = angular.module('author',
-  [uiRouter, LayoutsIndex, LayoutsEdit, PagesIndex, PagesEdit, 'ui.ace'])
+  [ uiRouter,
+    LayoutsIndex,
+    LayoutsEdit,
+    PagesIndex,
+    PagesEdit,
+    PostsIndex,
+    PostsEdit,
+    'ui.ace'])
   .config(config)
   .name
 

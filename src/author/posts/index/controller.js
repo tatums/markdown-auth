@@ -7,15 +7,15 @@ draft: true
 An interesting post.
 `
 
-class controller {
 
-  constructor(AwsService, pages) {
-    this.pages = pages
+class controller {
+  constructor(posts, AwsService) {
+    this.posts = posts
     this.AwsService = AwsService
   }
 
   create (form, validity) {
-    let key = `admin/src/pages/${form.key}`
+    let key = `admin/src/posts/${form.key}`
     this.AwsService.putObject(key, defaultBody)
       .then((resp) => {
         let date = new Date()
@@ -26,16 +26,6 @@ class controller {
       })
   }
 
-  delete (page) {
-    let index = this.pages.indexOf(page)
-    this.pages.splice(index, 1)
-    this.AwsService.deleteObject(page.Key)
-      .then((resp) => {
-      }).catch((err) => {
-        console.log('err: ', err)
-      })
-  }
-
 }
-controller.$inject = ['AwsService', 'pages']
+controller.$inject = ['posts', 'AwsService' ]
 export default controller

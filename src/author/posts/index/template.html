@@ -3,21 +3,24 @@
   <md-toolbar>
     <div class="md-toolbar-tools">
       <h2>
-        <span>Create New Page</span>
+        <span>Create New Post</span>
       </h2>
       <span flex></span>
     </div>
   </md-toolbar>
+
+
   <md-content class="md-whiteframe-z2 move-up" layout-padding>
-    <form ng-submit="ctl.create(ctl.form, pageForm.$valid)" name="pageForm">
+    <form ng-submit="ctl.create(ctl.form, postForm.$valid)" name="postForm">
       <md-input-container>
         <label>Name</label>
         <input ng-model="ctl.form.key" name="key"></input>
-        <p ng-if="pageForm.key.$error.required && ctl.pageForm.key.$touched">Page name is required.</p>
+        <p ng-if="postForm.key.$error.required && ctl.postForm.key.$touched">Post name is required.</p>
       </md-input-container>
       <md-button type="submit">Create</md-button>
     </form>
   </md-content>
+
 
   <md-toolbar>
     <div class="md-toolbar-tools">
@@ -27,19 +30,18 @@
 
   <md-content class="md-whiteframe-z2 move-up" layout-padding>
     <md-list>
-      <md-list-item class="md-3-line" ng-repeat="page in ctl.pages">
+      <md-list-item class="md-3-line" ng-repeat="post in ctl.posts">
         <div class="md-list-item-text">
-          <h3> <a ui-sref="pages.edit({ id: page.Key })">{{page.Key}}</a> </h3>
+          <h3> <a ui-sref="posts.edit({ id: post.Key })">{{post.Key}}</a> </h3>
           <p>
-          <span>{{page.LastModified}}<span>
-            <span>{{page.ETag}}<span>
-            <span>{{page.Size}}<span>
+          <span>{{post.LastModified}}<span>
+            <span>{{post.ETag}}<span>
+            <span>{{post.Size}}<span>
           </p>
         </div>
-        <md-button ng-click="ctl.delete(page)" class="md-raised md-warn">Del</md-button>
+        <md-button ng-click="ctl.delete(post)" class="md-raised md-warn">Del</md-button>
         <md-divider inset></md-divider>
       </md-list-item>
     </md-list>
   </md-content>
-
 </div>

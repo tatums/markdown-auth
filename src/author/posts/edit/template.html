@@ -1,0 +1,25 @@
+<div class="md-inline-form">
+  <md-toolbar>
+    <div class="md-toolbar-tools">
+      <span flex="" class="flex">Edit</span>
+    </div>
+  </md-toolbar>
+
+  <md-content class="md-whiteframe-z2 move-up" layout-padding>
+
+    <div ng-model="ctl.body" ui-ace="{
+    mode: 'html',
+    onLoad: aceLoaded,
+    onChange: aceChanged
+    }">
+    </div>
+
+    <md-button ng-click="ctl.save()" class="md-raised md-primary">Save</md-button>
+
+    <md-checkbox ng-model="ctl.saveInline"
+                 aria-label="Stay Here"
+                 class="md-warn" flex>
+      Save Inline
+    </md-checkbox>
+  </md-content>
+</div>
