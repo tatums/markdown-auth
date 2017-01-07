@@ -4,6 +4,7 @@ const collections = require('metalsmith-collections')
 const permalinks  = require('metalsmith-permalinks')
 const layouts = require('metalsmith-layouts')
 const discoverPartials = require('metalsmith-discover-partials')
+const drafts = require('metalsmith-drafts')
 
 module.exports = () => {
 
@@ -18,6 +19,7 @@ module.exports = () => {
       .source(sourcePath)
       .destination('/tmp/build')
       .clean(true)
+      .use(drafts())
       .use(discoverPartials({
         directory: "/tmp/admin/layouts",
         pattern: /\.hbs$/
